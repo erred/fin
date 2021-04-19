@@ -98,32 +98,32 @@ type GroupSummary struct {
 }
 
 func (s GroupSummary) String() string {
-	var b strings.Builder
-	b.WriteString(fmt.Sprintf("%s\t%+.2f\n", s.Name, float64(s.Total)/100))
+	b := &strings.Builder{}
+	fmt.Fprintf(b, "%s\t%+.2f\n", s.Name, float64(s.Total)/100)
 	for i, c := range s.Categories {
 		if i != 0 {
-			b.WriteString("\t")
+			b.WriteRune('\t')
 		}
-		b.WriteString(fmt.Sprintf("%-12s", c))
+		fmt.Fprintf(b, "%-12s", c)
 	}
-	b.WriteString("\n")
+	b.WriteRune('\n')
 	for i, d := range s.Deltas {
 		if i != 0 {
-			b.WriteString("\t")
+			b.WriteRune('\t')
 		}
-		b.WriteString(fmt.Sprintf("%+-12.2f", float64(d)/100))
+		fmt.Fprintf(b, "%+-12.2f", float64(d)/100)
 	}
-	b.WriteString("\n")
+	b.WriteRune('\n')
 	return b.String()
 }
 
 func (s MonthSummary) String() string {
-	var b strings.Builder
-	b.WriteString(fmt.Sprintf("%d-%02d\n", s.Year, s.Month))
+	b := &strings.Builder{}
+	fmt.Fprintf(b, "%d-%02d\n", s.Year, s.Month)
 	b.WriteString(s.Holdings.String())
 	b.WriteString(s.Income.String())
 	b.WriteString(s.Exppenses.String())
-	b.WriteString("\n")
+	b.WriteRune('\n')
 	return b.String()
 }
 
