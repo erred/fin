@@ -18,15 +18,27 @@ func main() {
 		"importcsv": importcsv.Run,
 		"summary":   summary.Run,
 	}
+	commands := func() {
+		scs := make([]string, 0, len(subCommands))
+		for k := range subCommands {
+			scs = append(scs, k)
+		}
+		fmt.Fprintf(os.Stderr, "commands:\n")
+		for _, c := range scs {
+			fmt.Fprintf(os.Stderr, "\t%s\n", c)
+		}
+	}
 
 	if len(flag.Args()) == 0 {
 		fmt.Fprintln(os.Stderr, "no command given")
+		commands()
 		os.Exit(1)
 	}
 
 	cmd, ok := subCommands[flag.Arg(0)]
 	if !ok {
-		fmt.Fprintln(os.Stderr, "unknown command")
+		fmt.Fprintf(os.Stderr, "unknown command: %s\n", flag.Arg(0))
+		commands()
 		os.Exit(1)
 	}
 	err := cmd(o, flag.Args())

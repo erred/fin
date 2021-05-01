@@ -17,10 +17,10 @@ type Options struct {
 	Holdings bool
 }
 
-func NewOptions(fs *flag.FlagSet) Options {
+func NewOptions(fs *flag.FlagSet) *Options {
 	var o Options
 	o.InitFlags(fs)
-	return o
+	return &o
 }
 
 func (o *Options) InitFlags(fs *flag.FlagSet) {
@@ -56,6 +56,7 @@ func Run(o run.Options, args []string) error {
 		mss = append(mss, ms)
 	}
 
+	fmt.Println(so.Delta, so.Holdings)
 	switch {
 	case so.Delta:
 		for _, ms := range mss {
@@ -137,7 +138,7 @@ func summarize(m *fin.Month) MonthSummary {
 	return MonthSummary{
 		Year:      int(m.Year),
 		Month:     int(m.Month),
-		Holdings:  group("Holdings", fin.Category_CASH, fin.Category_DEGIRO, delta),
+		Holdings:  group("Holdings", fin.Category_CASH, fin.Category_BITTREX, delta),
 		Income:    group("Income", fin.Category_SALARY, fin.Category_IN_OTHER, delta),
 		Exppenses: group("Expenses", fin.Category_FOOD, fin.Category_EDUCATION, delta),
 		Delta:     delta,
